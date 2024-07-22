@@ -33,13 +33,20 @@ DeviceProber::DeviceProber(IDeckLink* deckLink) :
 	m_deckLink->AddRef();
 	LLOG(INFO) << __PRETTY_FUNCTION__ << " for \"" << GetDeviceName() << "\"";
 
+    int64_t persistentID = SubDeviceUtil::GetPersistentID(m_deckLink);
+    if (persistentID != -1) {
+        LLOG(INFO) << "Persistent ID: " << persistentID;
+    }
+
 	m_canInput = queryCanInput();
 	m_canAutodetect = queryCanAutodetect();
 	m_isSubDevice = SubDeviceUtil::IsSubDevice(m_deckLink);
+	m_persistentId = SubDeviceUtil::GetPersistentID(m_deckLink);
 
 	LLOG(DEBUG) << "canInput = " << m_canInput
 		<< " && canAutodetect = " << m_canAutodetect
-		<< "; isSubDevice = " << m_isSubDevice;
+		<< "; isSubDevice = " << m_isSubDevice
+		<< "; persistentId = " << m_persistentId;
 
 	if (m_canAutodetect && m_canInput)
 	{
@@ -172,3 +179,8 @@ std::string DeviceProber::GetDeviceName() {
 	free(deviceNameString);
 	return str;
 }
+
+
+// int64_t DeviceProber::GetPersistentID() {
+// 	return SubDeviceUtil::GetPersistentID(m_deckLink);
+// }

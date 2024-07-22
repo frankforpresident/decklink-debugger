@@ -123,3 +123,35 @@ IDeckLink *SubDeviceUtil::findDeckLinkInterfaceByPersistentId(int64_t pairedDevi
 	LLOG(DEBUG) << "found no matching device";
 	return NULL;
 }
+
+int64_t SubDeviceUtil::GetPersistentID(IDeckLink *deckLink)
+{
+    LLOG(INFO) << __PRETTY_FUNCTION__;
+
+    if (!deckLink) {
+        LLOG(ERROR) << "Invalid IDeckLink pointer provided";
+        return -1;
+    }
+
+    HRESULT result;
+    IDeckLinkProfileAttributes* deckLinkAttributes = nullptr;
+    RefReleaser<IDeckLinkProfileAttributes> deckLinkAttributesReleaser(&deckLinkAttributes);
+
+    LLOG(DEBUG1) << "Querying IID_IDeckLinkProfileAttributes Interface";
+    result = deckLink->QueryInterface(IID_IDeckLinkProfileAttributes, (void **)&deckLinkAttributes);
+    if (result != S_OK) {
+        LLOG(ERROR) << "Could not obtain the IDeckLinkProfileAttributes interface";
+        return -1;
+    }
+
+    LLOG(DEBUG1) << "Querying BMDDeckLinkPersistentID attribute";
+    int64_t persistentID;
+    result = deckLinkAttributes->GetInt(BMDDeckLinkPersistentID, &persistentID);
+    if (result != S_OK) {
+        LLOG(ERROR) << "Failed to query BMDDeckLinkPersistentID attribute";
+        return -1;
+    }
+
+    LLOG(DEBUG) << "Persistent ID: 0x" << std::hex << persistentID;
+    return persistentID;
+}

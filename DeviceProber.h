@@ -16,10 +16,13 @@ public:
 	DeviceProber(IDeckLink* deckLink);
 	virtual ~DeviceProber();
 
+
 	virtual std::string GetDeviceName();
 	virtual bool        CanAutodetect()  { return m_canAutodetect; }
 	virtual bool        CanInput()       { return m_canInput; }
 	virtual bool        IsSubDevice()    { return m_isSubDevice; }
+	virtual int64_t     GetPersistentId() { return m_persistentId; }
+
 
 	// proxy to CaptureDelegate
 	virtual bool               GetSignalDetected();
@@ -48,6 +51,7 @@ private:
 	bool                 m_canAutodetect;
 	bool                 m_canInput;
 	bool                 m_isSubDevice;
+	int64_t              m_persistentId;
 };
 
 #endif
