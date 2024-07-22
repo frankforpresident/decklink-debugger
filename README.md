@@ -19,7 +19,7 @@ Prerequisites:
 
 ```
 # install Blackmagic libraries
-sudo dpkg -i $HOME/VOC/Blackmagic_Desktop_Video_Linux_10.9.9/deb/x86_64/desktopvideo_10.9.9a4_amd64.deb
+sudo dpkg -i $HOME/VOC/Blackmagic_Desktop_Video_Linux_12.8/deb/x86_64/desktopvideo_12.8.1a1_amd64.deb
 # install build dependencies
 sudo apt-get install libmicrohttpd-dev libpng-dev cmake make gcc g++
 # clone Git repository
@@ -30,7 +30,7 @@ cd decklink-debugger
 mkdir build
 cd build
 # specify path to Blackmagic SDK (optional parameter)
-cmake .. -DBLACKMAGIC_SDK_DIR=~/VOC/Blackmagic-DeckLink-SDK-10.9.9/Linux/include/
+cmake .. -DBLACKMAGIC_SDK_DIR=~/VOC/Blackmagic-DeckLink-SDK-12.8/Linux/include/
 # compile application
 make -j$(nproc)
 ```
