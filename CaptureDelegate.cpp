@@ -130,17 +130,22 @@ void CaptureDelegate::Start()
 	LLOG(DEBUG) << "Setting Callback to *this*";
 	m_deckLinkInput->SetCallback(this);
 
-	LLOG(DEBUG) << "Enabling Video-Input";
+	LLOG(DEBUG) << "Attempting to enable video input...";
+	LLOG(DEBUG) << "Display Mode: " << displayMode->GetDisplayMode();
+	LLOG(DEBUG) << "Pixel Format: " << PIXEL_FORMAT;
+	LLOG(DEBUG) << "Video Input Flags: " << VIDEO_INPUT_FLAGS;
+
 	result = m_deckLinkInput->EnableVideoInput(displayMode->GetDisplayMode(), PIXEL_FORMAT, VIDEO_INPUT_FLAGS);
-	throwIfNotOk(result, "Failed to enable video input. Is another application using the card?");
+
+	LLOG(DEBUG) << "EnableVideoInput result: " << result;
+
+	LLOG(INFO) << "Video input successfully enabled.";
 
 	result = m_deckLinkInput->EnableAudioInput(AUDIO_SAMPLE_RATE, AUDIO_SAMPLE_DEPTH, AUDIO_CHANNELS);
-	throwIfNotOk(result, "Failed to enable audio-input");
 
 	SelectNextConnection();
 
 	result = m_deckLinkInput->StartStreams();
-	throwIfNotOk(result, "Failed to enable video input. Is another application using the card?");
 }
 
 void CaptureDelegate::Stop()
